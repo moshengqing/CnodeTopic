@@ -10,9 +10,9 @@
                 <li><a href="#">首页</a></li>
                 <li><a href="#" @click="open">新手入门</a></li>
                 <li><a href="#" @click="open">API</a></li>
-                <li><a href="#"@click="open">关于</a></li>
-                <li><a href="#">登录</a></li>
-                <li><a href="#">退出</a></li>
+                <li><a href="#" @click="open">关于</a></li>
+                <li><a href="#" @click="gotoLogin">登录</a></li>
+                <!-- <li><a href="#">退出</a></li> -->
             </ul>
         </header>
     </div>
@@ -25,10 +25,15 @@ export default {
         }
     },
     methods: {
+        // 跳转登录
+        gotoLogin(){
+             this.$router.push('/login')
+        },
         open() {
         this.$message({
             message: '此功能未开通',
-            type: 'warning'
+            type: 'warning',
+            duration:1000
         });
       },
     },

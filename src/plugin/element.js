@@ -4,7 +4,10 @@ import {
     Avatar,
     Tag,
     Pagination,
-    Message 
+    Message,
+    Dialog,
+    Form,
+    Input,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -13,3 +16,6 @@ Vue.use(Avatar);
 Vue.use(Tag);
 Vue.use(Pagination)
 Vue.prototype.$message = Message;
+Vue.use(Dialog)
+Vue.use(Form)
+Vue.use(Input)

@@ -3,11 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './plugin/element'
+// import './plugin/element'
+import elementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
 import './assets/common.css'
 Vue.config.productionTip = false
-
+Vue.use(elementUI)
 axios.defaults.baseURL ='https://cnodejs.org/api/v1';
 
 Vue.prototype.$http = axios;

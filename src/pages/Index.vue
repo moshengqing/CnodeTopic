@@ -21,11 +21,11 @@
                 <el-pagination class="pagination"
                  background layout="prev, pager, next" :total="1000"></el-pagination>
             </section>
-            <section class="left_box">
+            <section class="left_box clearfix">
                 <div class="login">
                     <h3>CNode：Node.js专业中文社区</h3>
                     <p>您可以 登录 或 注册 , 也可以</p>
-                    <el-button type="primary">通过 Github 登录</el-button>
+                    <el-button @click="goLogin" type="primary">通过 Github 登录</el-button>
                 </div>
 
                 <div class="hot_topic">
@@ -58,7 +58,11 @@ export default {
         }
     },
     methods: {
-      async  getTopic(){
+        //登录
+        goLogin(){
+            this.$router.push('/login')
+        },
+        async getTopic(){
             const {data,status} = await this.$http.get(`/topics?limit=${this.limit}`);
             this.topicData = data.data;
             console.log(this.topicData)
@@ -94,7 +98,7 @@ export default {
 }
 
 .topic_box .classify li:hover{
-    background-color: cadetblue;
+    background-color: #fff;
     /* border-radius: 20px; */
 }
 .topic_box .content li{
