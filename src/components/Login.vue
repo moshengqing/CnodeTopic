@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
-     <div class="div"></div>
+  <div class="login">
+     <header class="nav"></header>
+      <el-button type="primary">主要按钮</el-button>
   </div>
 </template>
 
@@ -17,5 +18,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style  scope>
-
+.nav{
+  height: 50px;
+  width: 100%;
+  background: bisque;
+}
 </style>

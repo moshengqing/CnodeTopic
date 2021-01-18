@@ -3,9 +3,15 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import './plugin/element'
+import axios from 'axios'
+import './assets/common.css'
 Vue.config.productionTip = false
 
+axios.defaults.baseURL ='https://cnodejs.org/api/v1';
+
+Vue.prototype.$http = axios;
+console.log(Vue.$http)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
