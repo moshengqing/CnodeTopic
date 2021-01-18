@@ -32,3 +32,8 @@ input{
     display: block;
     clear: both;
 }
+.active{
+    color: black;
+    border-radius: 10px;
+    background-color:#FFF;
+}

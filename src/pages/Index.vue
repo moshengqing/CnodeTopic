@@ -4,9 +4,11 @@
         <main class="main_box container">
             <section class="topic_box">
                 <ul class="classify clearfix">
-                    <li><a href="#">全部</a></li>
-                    <li><a href="#">精华</a></li>
-                    <li><a href="#">分享</a></li>
+                    <li><a href="#" @click="change(1)" :class="{active : index ==1}">全部</a></li>
+                    <li><a href="#" @click="change(2)" :class="{active : index ==2}">精华</a></li>
+                    <li><a href="#" @click="change(3)" :class="{active : index ==3}">分享</a></li>
+                    <li><a href="#" @click="change(4)" :class="{active : index ==4}">问答</a></li>
+                    <li><a href="#" @click="change(5)" :class="{active : index ==5}">招聘</a></li>
                 </ul>
                 <div class="content">
                     <ul>
@@ -14,6 +16,7 @@
                             <!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
                             <el-tag size="mini" type="success">{{item.visit_count}}</el-tag>
                             <a href="#" class="title"> {{item.title}}</a>
+                            <el-tag size="mini" type="success">{{item.tab == "share" ? "分享": item.tab =="ask"?"问答": item.tab=="good"? "精华":"招聘"}}</el-tag>
                             <span class="time">{{item.create_at}}</span>
                         </li>
                     </ul>
@@ -55,6 +58,7 @@ export default {
             topicData:[],
             pages:10,
             limit:11,
+            index:1
         }
     },
     methods: {
@@ -62,13 +66,23 @@ export default {
         goLogin(){
             this.$router.push('/login')
         },
+        //导航切换
+        change(index){
+            switch(index){
+                case 1:this.index = index;break;
+                case 2:this.index = index;break;
+                case 3:this.index = index;break;
+                case 4:this.index = index;break;
+                case 5:this.index = index;break;
+            }
+        },
         async getTopic(){
             const {data,status} = await this.$http.get(`/topics?limit=${this.limit}`);
             this.topicData = data.data;
             console.log(this.topicData)
         },
     },
-    created() {
+    mounted() {
         this.getTopic();
     },
 }
@@ -88,18 +102,22 @@ export default {
    
 }
 .topic_box .classify{
+    height: 40px;
     border-bottom: 1px solid #ccc;
-    background-color: royalblue;
+    background-color:  rgb(68, 68, 68);
 }
 .topic_box .classify li{
     float: left;
-    padding: 10px;
-    font-size: 14px;  
+    font-size: 14px; 
 }
-
-.topic_box .classify li:hover{
-    background-color: #fff;
-    /* border-radius: 20px; */
+.topic_box .classify li a{
+    line-height: 40px;
+    padding: 0 10px;
+}
+.topic_box .classify li a:hover{
+    background-color: #FFF;
+    color: black;
+    border-radius: 10px;
 }
 .topic_box .content li{
     width: 100%;

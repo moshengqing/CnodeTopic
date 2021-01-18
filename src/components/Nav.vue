@@ -7,10 +7,10 @@
                 <input class="search" type="text" placeholder="搜你想要的">
             </label>
             <ul class="nav_list">
-                <li><a href="#">首页</a></li>
-                <li><a href="#" @click="open">新手入门</a></li>
-                <li><a href="#" @click="open">API</a></li>
-                <li><a href="#" @click="open">关于</a></li>
+                <li><a href="#" :class="{active:index==1}" @click="changeNav(1)">首页</a></li>
+                <li><a href="#" :class="{active:index==2}" @click="open(),changeNav(2)">新手入门</a></li>
+                <li><a href="#" :class="{active:index==3}" @click="open(),changeNav(3)">API</a></li>
+                <li><a href="#" :class="{active:index==4}" @click="open(),changeNav(4)">关于</a></li>
                 <li><a href="#" @click="gotoLogin">登录</a></li>
                 <!-- <li><a href="#">退出</a></li> -->
             </ul>
@@ -21,7 +21,7 @@
 export default {
     data() {
         return {
-            
+        index:1
         }
     },
     methods: {
@@ -36,6 +36,15 @@ export default {
             duration:1000
         });
       },
+      changeNav(index){
+        switch(index){
+            case 1:this.index = index;break;
+            case 2:this.index = index;break;
+            case 3:this.index = index;break;
+            case 4:this.index = index;break;
+            
+        }
+      }
     },
 }
 </script>
@@ -78,10 +87,11 @@ export default {
     font-size: 13px;
     text-align: center; 
     padding: 3px 10px;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 .nav .nav_list li a:hover{
-    background: rosybrown;
+    background: #fff;
+    color: black;
 
 }
 </style>
