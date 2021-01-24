@@ -72,7 +72,7 @@ export default {
     methods: {
         //登录
         goLogin(){
-            this.$router.push('/login');
+            this.$router.push('/login')
         },
         //导航切换
         change(index){
