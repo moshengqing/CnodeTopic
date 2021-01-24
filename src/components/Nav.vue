@@ -7,7 +7,7 @@
                 <input class="search" type="text" placeholder="搜你想要的">
             </label>
             <ul class="nav_list">
-                <li><a href="#" :class="{active:index==1}" @click="changeNav(1)">首页</a></li>
+                <li><a href="#" :class="{active:index==1}" @click="gotoIndex(),changeNav(1)">首页</a></li>
                 <li><a href="#" :class="{active:index==2}" @click="open(),changeNav(2)">新手入门</a></li>
                 <li><a href="#" :class="{active:index==3}" @click="open(),changeNav(3)">API</a></li>
                 <li><a href="#" :class="{active:index==4}" @click="open(),changeNav(4)">关于</a></li>
@@ -27,7 +27,11 @@ export default {
     methods: {
         // 跳转登录
         gotoLogin(){
-             this.$router.push('/login')
+             this.$router.push('login')
+        },
+        //跳转首页
+        gotoIndex(){
+            this.$router.push('index')
         },
         open() {
         this.$message({

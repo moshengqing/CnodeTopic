@@ -1,6 +1,8 @@
 <template>
     <div>
+        <!-- 导航栏 -->
         <Nav></Nav>
+        <!-- 主体区域 -->
         <main class="main_box container">
             <section class="topic_box">
                 <ul class="classify clearfix">
@@ -15,14 +17,15 @@
                         <li v-for="(item,index) in topicData"  :key="index">
                             <!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
                             <el-tag size="mini" type="success">{{item.visit_count}}</el-tag>
-                            <a href="#" class="title"> {{item.title}}</a>
+                            <router-link :to="{path:'detail',query:{id:item.id,userId:item.author.loginname}}" class="title"> {{item.title}}</router-link>
                             <el-tag size="mini" type="success">{{item.tab == "share" ? "分享": item.tab =="ask"?"问答": item.tab=="good"? "精华":"招聘"}}</el-tag>
                             <span class="time">{{item.create_at}}</span>
                         </li>
                     </ul>
                 </div>
+                <!-- 分页 -->
                 <el-pagination class="pagination"
-                 background layout="prev, pager, next" :total="1000"></el-pagination>
+                 background layout="prev, pager, next" :total="100"></el-pagination>
             </section>
             <section class="left_box clearfix">
                 <div class="login">
@@ -47,18 +50,23 @@
                 </a>
             </section>
         </main>
+        <!-- 底部 -->
+        <Foot></Foot>
     </div>
 </template>
 <script>
-import Nav from '../components/Nav.vue'
+import Nav from '@/components/Nav.vue'
+import Foot from '@/components/Foot.vue'
 export default {
-  components: { Nav },
+  components: { Nav,Foot },
     data() {
         return {
             topicData:[],
             pages:10,
             limit:11,
-            index:1
+            index:1,
+            tab :'',
+            mdrender :''
         }
     },
     methods: {
@@ -76,14 +84,15 @@ export default {
                 case 5:this.index = index;break;
             }
         },
-        async getTopic(){
+        //获取所有topic
+        async getAllTopics(){
             const {data,status} = await this.$http.get(`/topics?limit=${this.limit}`);
             this.topicData = data.data;
             console.log(this.topicData)
         },
     },
     mounted() {
-        this.getTopic();
+        this.getAllTopics();
     },
 }
 </script>
@@ -92,7 +101,6 @@ export default {
 .main_box{
     margin-top: 15px;
     height: 600px;
-    /* background-color: coral; */
      position: relative;
 }
 .main_box .topic_box{
