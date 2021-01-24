@@ -88,7 +88,7 @@ export default {
         async getAllTopics(){
             const {data,status} = await this.$http.get(`/topics?limit=${this.limit}`);
             this.topicData = data.data;
-            console.log(this.topicData)
+            console.log(this.topicData);
         },
     },
     mounted() {
