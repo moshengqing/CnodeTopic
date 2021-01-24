@@ -66,7 +66,7 @@ export default {
             limit:11,
             index:1,
             tab :'',
-            mdrender :''
+            mdrender :'true'
         }
     },
     methods: {
