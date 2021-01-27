@@ -13,8 +13,10 @@
          </div>
          <div class="right_content">
              <h4 >作者</h4>
-             <img :src="topicAuthor.avatar_url" alt="头像暂无">
-             <span class="author_name">{{topicAuthor.githubUsername}}</span>
+             <div class="authoer_info">
+               <img :src="topicAuthor.avatar_url" alt="头像暂无">
+               <span class="author_name">{{topicAuthor.githubUsername}}</span>
+             </div>
              <p class="score">积分:{{topicAuthor.score}}</p>
              <p class="individual_signature">“ 这家伙很懒，什么个性签名都没有留下。 ”</p>
          </div>
@@ -110,7 +112,6 @@ export default {
 .right_content{
     float: right;
     width: 225px;
-    /* height: 300px; */
     padding: 10px 5px;
     background-color: #fff;
     
@@ -120,18 +121,22 @@ export default {
     background-color: #ccc;
     text-align: center;
 }
-.right_content img{
+.right_content .authoer_info img{
     border: 1px solid #ddd;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     font-size: 12px;
-    border-radius: 50%;
+    vertical-align: middle;
+}
+.right_content .authoer_info{
+    width: 100%;
+    height: 50px;
 }
 .right_content .author_name{
-    display: inline-block;
-    padding-left: 10px;
     font-weight: 600;
+    line-height: 50px;
+    padding-left: 10px;
 
 }
 .right_content .score{
@@ -142,7 +147,4 @@ export default {
     font-size: 14px;
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
-
-
-
 </style>

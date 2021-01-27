@@ -11,16 +11,17 @@ export default {
     
 }
 </script>
-<style scope>
-.footer{
+<style scope  >
+ .footer{
     width: 100%;
     padding: 30px 0;
-    background-color: #fff;
+    background-color: #cccc;
 }
 .footer ul li{
     float: left;
 }
 .footer  h4{
     line-height: 3em;
-}
-</style>
+}   
+</style>>
+

@@ -3,31 +3,39 @@
         <!-- 导航栏 -->
         <Nav></Nav>
         <!-- 主体区域 -->
-        <main class="main_box container">
-            <section class="topic_box">
+        <main class="main_box container clearfix">
+            <section class="topic_box clearfix">
                 <ul class="classify clearfix">
                     <li><a href="#" @click="change(1)" :class="{active : index ==1}">全部</a></li>
-                    <li><a href="#" @click="change(2)" :class="{active : index ==2}">精华</a></li>
-                    <li><a href="#" @click="change(3)" :class="{active : index ==3}">分享</a></li>
+                     <li><a href="#" @click="change(2)" :class="{active : index ==2}">精华</a></li>
+                     <li><a href="#" @click="change(3)" :class="{active : index ==3}">分享</a></li>
                     <li><a href="#" @click="change(4)" :class="{active : index ==4}">问答</a></li>
                     <li><a href="#" @click="change(5)" :class="{active : index ==5}">招聘</a></li>
                 </ul>
-                <div class="content">
+                <div class="content clearfix">
                     <ul>
                         <li v-for="(item,index) in topicData"  :key="index">
                             <!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
                             <el-tag size="mini" type="success">{{item.visit_count}}</el-tag>
                             <router-link :to="{path:'detail',query:{id:item.id,userId:item.author.loginname}}" class="title"> {{item.title}}</router-link>
-                            <el-tag size="mini" type="success">{{item.tab == "share" ? "分享": item.tab =="ask"?"问答": item.tab=="good"? "精华":"招聘"}}</el-tag>
+                            <el-tag size="mini" type="success">{{item.tab == "share" ? "分享": item.tab =="ask"?"问答": item.good=="true"? "精华":"招聘"}}</el-tag>
                             <span class="time">{{item.create_at}}</span>
                         </li>
                     </ul>
                 </div>
                 <!-- 分页 -->
-                <el-pagination class="pagination"
-                 background layout="prev, pager, next" :total="100"></el-pagination>
+                <el-pagination
+                style="margin:10px"
+                 @size-change="handleSizeChange"
+                 @current-change="handleCurrentChange"
+                 :current-page="currentPage"
+                 :page-sizes="[10, 20, 30, 40]"
+                 
+                 layout="total, sizes, prev, pager, next, jumper"
+                 :total="total">
+                 </el-pagination>
             </section>
-            <section class="left_box clearfix">
+            <section class="left_box ">
                 <div class="login">
                     <h3>CNode：Node.js专业中文社区</h3>
                     <p>您可以 登录 或 注册 , 也可以</p>
@@ -61,15 +69,54 @@ export default {
   components: { Nav,Foot },
     data() {
         return {
+            //主体数据
             topicData:[],
-            pages:10,
-            limit:11,
-            index:1,
+            //总量
+            total:40,
+            //当前页
+            currentPage:1,
+            // 每页显示多少条
+            limit:10,
+            //标签
             tab :'',
-            mdrender :'true'
+            mdrender :'true',
+            //导航切换
+            index:1,
+            
         }
     },
     methods: {
+        handleSizeChange(val) {
+        // 每页显示多少条
+        console.log(`每页 ${val} 条`);
+        this.limit = val;
+        switch(this.index){
+            case 1:this.getAllTopics(this.currentPage,this.limit);break;
+            case 2:this.gettopicByTab(this.currentPage,this.limit,'good');break;
+            case 3:this.gettopicByTab(this.currentPage,this.limit,'share');break;
+            case 4:this.gettopicByTab(this.currentPage,this.limit,'ask');break;
+            case 5:this.gettopicByTab(this.currentPage,this.limit,'job');break;
+        }
+        
+        
+      },
+      //当前页
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        switch(this.index){
+            case 1:this.getAllTopics(val,this.limit);break;
+            case 2:this.gettopicByTab(this.currentPage,this.limit,'good');break;
+            case 3:this.gettopicByTab(this.currentPage,this.limit,'share');break;
+            case 4:this.gettopicByTab(this.currentPage,this.limit,'ask');break;
+            case 5:this.gettopicByTab(this.currentPage,this.limit,'job');break;
+        }
+        // if(this.index ==1){
+        //     this.getAllTopics(val,this.limit)
+        // }
+        // this.gettopicByTab(this.currentPage,this.limit,'good');
+        
+        
+      },
         //登录
         goLogin(){
             this.$router.push('/login')
@@ -77,22 +124,38 @@ export default {
         //导航切换
         change(index){
             switch(index){
-                case 1:this.index = index;break;
-                case 2:this.index = index;break;
-                case 3:this.index = index;break;
-                case 4:this.index = index;break;
-                case 5:this.index = index;break;
+                case 1:this.index = index;this.getAllTopics(this.currentPage,this.limit); 
+                break;
+                case 2:this.index = index;this.gettopicByTab(this.currentPage,this.limit,'good');
+                break;
+                case 3:this.index = index;this.gettopicByTab(this.currentPage,this.limit,'share');
+                break;
+                case 4:this.index = index;this.gettopicByTab(this.currentPage,this.limit,'ask')
+                break;
+                case 5:this.index = index;this.gettopicByTab(this.currentPage,this.limit,'job')
+                break;
             }
+           
         },
-        //获取所有topic
-        async getAllTopics(){
-            const {data,status} = await this.$http.get(`/topics?limit=${this.limit}`);
+        async gettopicByTab(page,limit,tab){
+           const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}&tab=${tab}`);
+           this.topicData = data.data; 
+        },
+        
+        //根据条件获取所有topic
+        async getAllTopics(page,limit){
+            const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}`);
             this.topicData = data.data;
-            console.log(this.topicData);
+        },
+        async getTopicsLength(){
+            const {data,status} = await this.$http.get(`/topics`);
+            this.total = data.data.length;
         },
     },
     mounted() {
-        this.getAllTopics();
+        this.getAllTopics(this.currentPage,this.limit); 
+        this.getTopicsLength();
+        
     },
 }
 </script>
@@ -100,12 +163,10 @@ export default {
 <style lang="" scope>
 .main_box{
     margin-top: 15px;
-    height: 600px;
-     position: relative;
+    position: relative;
 }
 .main_box .topic_box{
     width: 1050px;
-    height: 300px;
     float: left;
    
 }
@@ -136,17 +197,12 @@ export default {
     line-height: 44px;
     cursor: pointer;
 }
-/* .topic_box .content li:hover{
-    background-color: rgba(175, 169, 169, 0.5);
-} */
 .topic_box .content li .img{
     float: left;
     margin: 2px 5px 0 0;
 }
-
 .topic_box .content li .title{
     color: #888;
-    /* padding-left: 20px; */
 }
 .topic_box .content li .title:hover{
     text-decoration:underline;
@@ -156,16 +212,11 @@ export default {
     font-size: 12px;
 }
 .pagination{
-    position: absolute;
-    bottom: 10px;
-    left: 0;
+    margin: 20px;
 }
-
 .main_box .left_box{
     width: 235px;
-    height: 300px;
     float: right;
-    /* background-color: #fff; */
 }
 .login{
     margin: 0 auto;
@@ -193,7 +244,6 @@ export default {
     margin-top: 10px;
     height: 100px;
     width: 100%;
-    background-color: #fff;
     background: url(../assets/01.png) no-repeat ;
     background-size: 100%  auto;
 }
