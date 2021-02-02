@@ -15,7 +15,6 @@
                 <div class="content clearfix">
                     <ul>
                         <li v-for="(item,index) in topicData"  :key="index">
-                            <!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
                             <el-tag size="mini" type="success">{{item.visit_count}}</el-tag>
                             <router-link :to="{path:'detail',query:{id:item.id,userId:item.author.loginname}}" class="title"> {{item.title}}</router-link>
                             <el-tag size="mini" type="success">{{item.tab == "share" ? "分享": item.tab =="ask"?"问答": item.good=="true"? "精华":"招聘"}}</el-tag>
@@ -29,7 +28,7 @@
                  @size-change="handleSizeChange"
                  @current-change="handleCurrentChange"
                  :current-page="currentPage"
-                 :page-sizes="[10, 20, 30, 40]"
+                 :page-sizes="[15, 20, 30, 40]"
                  
                  layout="total, sizes, prev, pager, next, jumper"
                  :total="total">
@@ -45,13 +44,12 @@
                 <div class="hot_topic">
                     <h4>热门话题</h4>
                     <ul>
-                        <li>1</li>
-                        <li>3</li>
-                        <li>2</li>
-                        <li>3</li>
+                        <li v-for="(hot,index) in getHot" :key="index">
+                            <span class="num">{{index+1}}</span>
+                           <router-link class="hot_title" :to="{path:'detail',query:{id:hot.id,userId:hot.author.loginname}}">{{hot.title}}</router-link>
+                        </li>
                     </ul>
                 </div>
-
                 <a href="https://ruby-china.org/" class="friends_communiction">
                     <h4>友情社区</h4>
                     <!-- <img src="../assets/01.png" alt="" srcset=""> -->
@@ -69,6 +67,8 @@ export default {
   components: { Nav,Foot },
     data() {
         return {
+            //积分排名
+            integral:[],
             //热门话题
             hotTopics:[],
             //主体数据
@@ -78,7 +78,7 @@ export default {
             //当前页
             currentPage:1,
             // 每页显示多少条
-            limit:10,
+            limit:15,
             //标签
             tab :'',
             mdrender :'true',
@@ -139,7 +139,7 @@ export default {
         async gettopicByTab(page,limit,tab){
            const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}&tab=${tab}`);
            this.topicData = data.data; 
-           console.log(data.data);
+           
         },
         
         //根据条件获取所有topic
@@ -147,18 +147,29 @@ export default {
             const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}`);
             this.topicData = data.data;
             
+            
         },
         // 获取数据总长度
         async getTopicsLength(){
             const {data,status} = await this.$http.get(`/topics`);
             this.total = data.data.length;
-            // this.hotTopics = data.data.
+            //热度最高
+            this.hotTopics = data.data;
+            console.log(this.hotTopics);
         }
     },
-    beforeMount() {
+    mounted(){
         this.getAllTopics(this.currentPage,this.limit); 
-        this.getTopicsLength();     
+        this.getTopicsLength();  
     },
+    computed:{
+        getHot(){
+            let arr = this.hotTopics.sort((a,b)=>{
+                return b.visit_count - a.visit_count;
+            }) 
+           return arr.slice(0,8);
+        },
+    }
 }
 </script>
 
@@ -184,6 +195,7 @@ export default {
 .topic_box .classify li a{
     line-height: 40px;
     padding: 0 10px;
+    color: #ccc;
 }
 .topic_box .classify li a:hover{
     background-color: #FFF;
@@ -231,15 +243,39 @@ export default {
 }
 .hot_topic{
     width: 100%;
-    height: 250px;
+    /* height: 250px; */
     margin-top: 10px;
     border-radius: 10px;
     background-color: #fff;
+    overflow: hidden;
+    
 }
 .hot_topic h4{
     text-align: center;
     padding: 10px;
     background-color: rgba(241, 241, 241, 0.8);
+}
+.hot_topic li{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.hot_topic .num{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    background-color: rgb(223, 44, 20);
+    color: #fff;
+    text-align: center;
+    line-height: 20px;
+}
+.hot_topic .hot_title{
+    font-size: 14px;
+    color: #888;
+}
+.hot_topic .hot_title:hover{
+    text-decoration: underline;
 }
 .friends_communiction{
     display: block;

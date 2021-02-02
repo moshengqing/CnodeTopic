@@ -63,7 +63,10 @@ export default {
 .nav .logo{
     line-height: 50px;
     float: left;
-    /* margin-left: 50px; */
+    
+}
+.nav .logo a{
+    color: #ccc;
 }
 .nav .search{
     float: left;
@@ -92,6 +95,7 @@ export default {
     text-align: center; 
     padding: 3px 10px;
     border-radius: 10px;
+    color: #ccc;
 }
 .nav .nav_list li a:hover{
     background: #fff;

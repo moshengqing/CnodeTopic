@@ -11,7 +11,10 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      meta: {
+        keepAlive: true // 需要被缓存
+      }
     },
     {
       path: '/login',
@@ -21,7 +24,10 @@ export default new Router({
     {
       path: '/detail',
       name: 'detail:id',
-      component: Detail
+      component: Detail,
+      meta: {
+        keepAlive: false // 不需要缓存
+      }
     }
   ]
 })
