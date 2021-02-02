@@ -69,6 +69,8 @@ export default {
   components: { Nav,Foot },
     data() {
         return {
+            //热门话题
+            hotTopics:[],
             //主体数据
             topicData:[],
             //总量
@@ -90,6 +92,7 @@ export default {
         // 每页显示多少条
         console.log(`每页 ${val} 条`);
         this.limit = val;
+        console.log(this.index)
         switch(this.index){
             case 1:this.getAllTopics(this.currentPage,this.limit);break;
             case 2:this.gettopicByTab(this.currentPage,this.limit,'good');break;
@@ -102,20 +105,15 @@ export default {
       },
       //当前页
       handleCurrentChange(val) {
+        // console.log(this.index)
         console.log(`当前页: ${val}`);
         switch(this.index){
             case 1:this.getAllTopics(val,this.limit);break;
-            case 2:this.gettopicByTab(this.currentPage,this.limit,'good');break;
-            case 3:this.gettopicByTab(this.currentPage,this.limit,'share');break;
-            case 4:this.gettopicByTab(this.currentPage,this.limit,'ask');break;
-            case 5:this.gettopicByTab(this.currentPage,this.limit,'job');break;
-        }
-        // if(this.index ==1){
-        //     this.getAllTopics(val,this.limit)
-        // }
-        // this.gettopicByTab(this.currentPage,this.limit,'good');
-        
-        
+            case 2:this.gettopicByTab(val,this.limit,'good');break;
+            case 3:this.gettopicByTab(val,this.limit,'share');break;
+            case 4:this.gettopicByTab(val,this.limit,'ask');break;
+            case 5:this.gettopicByTab(val,this.limit,'job');break;
+        }       
       },
         //登录
         goLogin(){
@@ -137,25 +135,29 @@ export default {
             }
            
         },
+        //通过tab来请求相应数据
         async gettopicByTab(page,limit,tab){
            const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}&tab=${tab}`);
            this.topicData = data.data; 
+           console.log(data.data);
         },
         
         //根据条件获取所有topic
         async getAllTopics(page,limit){
             const {data,status} = await this.$http.get(`/topics?page=${page}&limit=${limit}`);
             this.topicData = data.data;
+            
         },
+        // 获取数据总长度
         async getTopicsLength(){
             const {data,status} = await this.$http.get(`/topics`);
             this.total = data.data.length;
-        },
+            // this.hotTopics = data.data.
+        }
     },
-    mounted() {
+    beforeMount() {
         this.getAllTopics(this.currentPage,this.limit); 
-        this.getTopicsLength();
-        
+        this.getTopicsLength();     
     },
 }
 </script>
@@ -173,7 +175,7 @@ export default {
 .topic_box .classify{
     height: 40px;
     border-bottom: 1px solid #ccc;
-    background-color:  rgb(68, 68, 68);
+    background-color:  rgb(5, 162, 173);
 }
 .topic_box .classify li{
     float: left;
