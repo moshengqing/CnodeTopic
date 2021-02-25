@@ -7,12 +7,11 @@
                 <input class="search" type="text" placeholder="搜你想要的">
             </label>
             <ul class="nav_list">
-                <li><a href="#" :class="{active:index==1}" @click="gotoIndex(),changeNav(1)">首页</a></li>
-                <li><a href="#" :class="{active:index==2}" @click="open(),changeNav(2)">新手入门</a></li>
-                <li><a href="#" :class="{active:index==3}" @click="open(),changeNav(3)">API</a></li>
-                <li><a href="#" :class="{active:index==4}" @click="open(),changeNav(4)">关于</a></li>
-                <li><a href="#" @click="gotoLogin">登录</a></li>
-                <!-- <li><a href="#">退出</a></li> -->
+                <li @click="gotoIndex(),changeNav(1)"><router-link to="" :class="{active:index==1}" >首页</router-link></li>
+                <li @click="open(),changeNav(2)"><router-link to="" :class="{active:index==2}" >新手入门</router-link></li>
+                <li @click="open(),changeNav(3)"><router-link to="" :class="{active:index==3}" >API</router-link></li>
+                <li @click="open(),changeNav(4)"><router-link to="" :class="{active:index==4}" >关于</router-link></li>
+                <li @click="open()"><router-link to="" >登录</router-link></li>
             </ul>
         </header>
     </div>
@@ -27,11 +26,11 @@ export default {
     methods: {
         // 跳转登录
         gotoLogin(){
-             this.$router.push('login')
+            this.$router.push('/login')
         },
         //跳转首页
         gotoIndex(){
-            this.$router.push('index')
+            this.$router.push('/')
         },
         open() {
         this.$message({

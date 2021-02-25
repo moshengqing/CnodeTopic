@@ -8,6 +8,7 @@ import {
     Dialog,
     Form,
     Input,
+    MessageBox 
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -19,3 +20,4 @@ Vue.prototype.$message = Message;
 Vue.use(Dialog)
 Vue.use(Form)
 Vue.use(Input)
+Vue.prototype.$MessageBox = MessageBox;

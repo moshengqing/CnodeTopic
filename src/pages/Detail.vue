@@ -5,8 +5,8 @@
          <div class="left_content" >
              <div class="title_box">
              <h3>{{oneTopic.title}}</h3>
-             <p> 发布于{{oneTopic.create_at}}---作者:{{oneTopic.author.loginname}} -- {{oneTopic.visit_count}}次浏览 来自 {{oneTopic.tab == "share" ? "分享": oneTopic.tab =="ask"?"问答": oneTopic.tab=="good"? "精华":"招聘"}}</p>
-             <el-button class="selected" type="success">收藏</el-button>
+             <p> 发布于{{T(oneTopic.create_at)}}---作者:{{oneTopic.author.loginname}} -- {{oneTopic.visit_count}}次浏览 来自 {{oneTopic.tab == "share" ? "分享": oneTopic.tab =="ask"?"问答": oneTopic.tab=="good"? "精华":"招聘"}}</p>
+             <el-button @click="noFunction()" class="selected" type="success">收藏</el-button>
              </div>
              <!-- 主题内容 -->
              <div class="topic_content" v-html="oneTopic.content"></div>
@@ -27,6 +27,7 @@
 <script>
 import Nav from '@/components/Nav.vue'
 import Foot from '@/components/Foot.vue'
+import timeForm from '../assets/utils'
 export default {
     components:{Nav,Foot},
     data() {
@@ -61,13 +62,28 @@ export default {
                this.topicAuthor = data.data
            }
            console.log(this.topicAuthor);
-        }
+        },
+        noFunction(){
+            this.$message({
+            message: '此功能未开通',
+            type: 'warning',
+            duration:1000
+        });
+        },
     },
     mounted() {
         this.getOneTopic(),
         this.getTopicAuthor()
         console.log(this.userId)
     },
+    computed:{
+      //时间过滤器
+        T(){
+            return function(time){
+                return timeForm(time)
+            }
+        }  
+    }
 
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="login_box">
-  <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form :model="ruleForm" status-icon  ref="ruleForm" label-width="100px" class="demo-ruleForm">
   <el-form-item label="GitHub账户" prop="username">
     <el-input type="text" placeholder="请输入GitHub账号" v-model="ruleForm.pass" autocomplete="off"></el-input>
   </el-form-item>
@@ -13,51 +13,28 @@
   </el-form-item>
 </el-form>
   </div>
+  
 </template>
 
 <script>
   export default {
     data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入账号'));
-        }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('密码错误'));
-        }
-      };
+      
       return {
         ruleForm: {
           username: '',
           pwd: '',
         },
-        rules: {
-          username: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          pwd: [
-            { validator: validatePass2, trigger: 'blur' }
-          ],
-        }
       };
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+         alert('登录')
       },
       resetForm(formName) {
-        this.$refs[formName].resetFields();
+        this.ruleForm = {}
       }
-    }
+    },
   }
 </script>
 
